@@ -13,6 +13,7 @@ import { Navigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { signup } from '../../redux/actions/userAction';
 import { useState } from 'react';
+import Spinner from 'react-bootstrap/Spinner';
 
 
 const SignUp = () => {
@@ -31,7 +32,11 @@ const SignUp = () => {
     }
 
     if (user.loading) {
-        return <p>Loading...</p>
+        return (
+            <Spinner animation="border" role="status">
+                <span className="visually-hidden">Loading...</span>
+            </Spinner>
+        );
     }
 
     const handleClickSignUp = (e) => {
