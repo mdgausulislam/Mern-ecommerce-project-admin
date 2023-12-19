@@ -2,18 +2,23 @@ import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link, NavLink } from 'react-router-dom';
+import { signOut } from '../../../redux/actions/authActions';
 const NavBar = () => {
     const auth = useSelector(state => state.auth);
+    const dispatch = useDispatch();
 
 
+    const logOut = () => {
+        dispatch(signOut());
+    }
 
     const loggedInLinks = () => {
         return (
             <Nav>
                 <li className="nav-item">
-                    <span className='nav-link'>SignOut</span>
+                    <button className='nav-link' onClick={logOut}>SignOut</button>
                 </li>
             </Nav>
         )

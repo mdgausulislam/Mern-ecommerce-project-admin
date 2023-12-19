@@ -1,5 +1,6 @@
 import axiosInstance from "../../Axios/AxiosSecure";
-import authConstant from "./constant"
+import { authConstant } from "./constant";
+
 
 const login = (user) => {
     console.log(user);
@@ -39,6 +40,7 @@ const login = (user) => {
 export default login;
 
 
+
 export const isUserLoggedIn = () => {
     return async dispatch => {
         const token = localStorage.getItem('token');
@@ -64,5 +66,8 @@ export const isUserLoggedIn = () => {
 export const signOut = () => {
     return async dispatch => {
         localStorage.clear();
+        dispatch({
+            type: authConstant.LOGOUT_REQUEST
+        })
     }
 }
