@@ -6,9 +6,9 @@ import {
 
 }
     from 'mdb-react-ui-kit';
-import login, { isUserLoggedIn } from '../../redux/actions/authActions';
+import login from '../../redux/actions/authActions';
 import { useDispatch, useSelector } from 'react-redux';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import SocialLogin from '../Shared/SocialLogin/SocialLogin';
 import { Navigate } from 'react-router-dom';
 
@@ -20,11 +20,6 @@ const Login = () => {
 
     const dispatch = useDispatch();
 
-    useEffect(() => {
-        if (!auth.authenticate) {
-            dispatch(isUserLoggedIn())
-        }
-    }, [])
 
     const handleClickLogin = (e) => {
         e.preventDefault();

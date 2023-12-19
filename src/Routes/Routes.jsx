@@ -31,27 +31,34 @@
 // ]);
 
 
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { Routes, Route } from 'react-router-dom';
 import Login from '../Components/Login/Login';
 import SignUp from '../Components/SignUp/SignUp';
 import Home from '../Components/Home/Home/Home';
 import Main from '../Layout/Main';
 import PrivateRoutes from './PrivateRoutes';
+import { useDispatch, useSelector } from 'react-redux';
+import { isUserLoggedIn } from '../redux/actions/authActions';
 
 const App = () => {
+    const dispatch = useDispatch();
+    const auth = useSelector(state => state.auth);
+    useEffect(() => {
+        if (!auth.authenticate) {
+            dispatch(isUserLoggedIn())
+        }
+    }, [])
     return (
         <div className='App'>
-            <Router>
-                <Routes>
-                    <Route path="/" element={<Main />}>
-                        {/* Public Routes */}
-                        <Route index element={<PrivateRoutes Component={Home} />} />
-                        <Route path="/login" element={<Login />} />
-                        <Route path="/signup" element={<SignUp />} />
-                    </Route>
-                </Routes>
-            </Router>
+            <Routes>
+                <Route path="/" element={<Main />}>
+                    {/* Public Routes */}
+                    <Route index element={<PrivateRoutes Component={Home} />} />
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/signup" element={<SignUp />} />
+                </Route>
+            </Routes>
         </div>
     );
 };

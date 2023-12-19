@@ -59,3 +59,10 @@ export const isUserLoggedIn = () => {
         }
     }
 }
+
+
+export const signOut = () => {
+    return async dispatch => {
+        localStorage.clear();
+    }
+}
