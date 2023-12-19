@@ -1,7 +1,15 @@
 import authConstant from "../actions/constant";
 
 const initState = {
-    token: null
+    token: null,
+    user: {
+        firstName: '',
+        lastName: '',
+        email: '',
+        picture: ''
+    },
+    authenticate: false,
+    authenticating: false
 };
 
 const authReducers = (state = initState, action) => {
@@ -10,7 +18,16 @@ const authReducers = (state = initState, action) => {
         case authConstant.LOGIN_REQUEST:
             return {
                 ...state,
-                ...action.payload
+                // ...action.payload
+                authenticating: true
+            };
+        case authConstant.LOGIN_SUCCESS:
+            return {
+                ...state,
+                user: action.payload.user,
+                token: action.payload.token,
+                authenticate: true,
+                authenticating: false
             };
         default:
             return state;
