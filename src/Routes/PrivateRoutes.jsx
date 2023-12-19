@@ -30,7 +30,6 @@ const PrivateRoutes = ({ Component, ...rest }) => {
     if (!token) {
         return <Navigate to="/login" replace />;
     }
-
     // Render the provided component if authenticated
     return <Component {...rest} />;
 };

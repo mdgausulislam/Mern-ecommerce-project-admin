@@ -6,17 +6,25 @@ import {
 
 }
     from 'mdb-react-ui-kit';
-import login from '../../redux/actions/authActions';
-import { useDispatch } from 'react-redux';
-import { useState } from 'react';
+import login, { isUserLoggedIn } from '../../redux/actions/authActions';
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect, useState } from 'react';
 import SocialLogin from '../Shared/SocialLogin/SocialLogin';
+import { Navigate } from 'react-router-dom';
 
 const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
+    const auth = useSelector(state => state.auth);
 
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        if (!auth.authenticate) {
+            dispatch(isUserLoggedIn())
+        }
+    }, [])
 
     const handleClickLogin = (e) => {
         e.preventDefault();
@@ -26,6 +34,10 @@ const Login = () => {
             email, password
         }
         dispatch(login(user));
+    }
+
+    if (auth.authenticate) {
+        return <Navigate to='/' />
     }
     return (
         <MDBContainer className="p-3 my-5 container">
