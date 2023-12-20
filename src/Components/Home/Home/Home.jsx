@@ -5,7 +5,8 @@ import NavBar from '../../Shared/NavBar/NavBar';
 const Home = () => {
     return (
         <div>
-            <AdminDashboard />
+            {/* <AdminDashboard /> */}
+            <h1>Home</h1>
         </div>
     );
 };

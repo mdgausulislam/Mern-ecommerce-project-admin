@@ -40,6 +40,9 @@ import Main from '../Layout/Main';
 import PrivateRoutes from './PrivateRoutes';
 import { useDispatch, useSelector } from 'react-redux';
 import { isUserLoggedIn } from '../redux/actions/authActions';
+import Order from '../pages/Order/Order';
+import Product from '../pages/Product/Product';
+import Category from '../pages/category/category';
 
 const App = () => {
     const dispatch = useDispatch();
@@ -55,6 +58,11 @@ const App = () => {
                 <Route path="/" element={<Main />}>
                     {/* Public Routes */}
                     <Route index element={<PrivateRoutes Component={Home} />} />
+                    <Route path="/order" element={<Order />} />
+                    <Route path="/category" element={<Category />} />
+                    <Route path="/product" element={<Product />} />
+
+
                     <Route path="/login" element={<Login />} />
                     <Route path="/signup" element={<SignUp />} />
                 </Route>
