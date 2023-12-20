@@ -1,6 +1,7 @@
 import { NavLink, Outlet } from "react-router-dom";
 import NavBar from "../Components/Shared/NavBar/NavBar";
 import { Col, Container, Row } from "react-bootstrap";
+import './Main.css'
 
 const Main = () => {
     return (

@@ -24,12 +24,6 @@ const Category = () => {
         form.append('parentId',parentCategoryId)
         form.append('categoryImage',categoryImage)
         dispatch(addCategory(form));
-        // const cat = {
-        //     categoryName,
-        //     parentCategoryId,
-        //     categoryImage
-        // }
-        // console.log(cat);
         setShow(false)
     };
     const handleShow = () => setShow(true);
@@ -54,7 +48,6 @@ const Category = () => {
                 value: category._id,
                 name: category.name,
             });
-            console.log(category.name);
             if (category.children.length > 0) {
                 createCategoryList(category.children, options)
             }
