@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Button, Col, Container, Modal, Row } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
+import { addProduct } from '../../redux/actions/productAction';
+import Table from 'react-bootstrap/Table';
 
 const Product = () => {
     const [name, setName] = useState("");
@@ -15,7 +17,23 @@ const Product = () => {
     const category = useSelector((state) => state.category);
     const product = useSelector((state) => state.product);
     const dispatch = useDispatch();
+
+
     const handleClose = () => {
+        const form = new FormData();
+
+        form.append("name", name);
+        form.append("quantity", quantity);
+        form.append("price", price);
+        form.append("description", description);
+        form.append("category", categoryId);
+
+        for (let pic of productPictures) {
+            form.append("productPicture", pic);
+        }
+
+        dispatch(addProduct(form))
+
         setShow(false);
     };
     const handleShow = () => setShow(true);
@@ -35,6 +53,46 @@ const Product = () => {
 
         return options;
     }
+
+    const handleProductPicture = (e) => {
+        setProductPictures([
+            ...productPictures,
+            e.target.files[0]
+        ])
+    }
+
+    const renderProducts = () => {
+        return (
+            <Table responsive="sm">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Description</th>
+                        <th>Category</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {
+                        product.products.length > 0 ?
+                            product.products.map((product, index) => <tr key={product._id}>
+                                <td>{index + 1}</td>
+                                <td>{product.name}</td>
+                                <td>{product.price}</td>
+                                <td>{product.quantity}</td>
+                                <td>{product.description}</td>
+                                <td>{product.category}</td>
+                            </tr>) : null
+                    }
+
+                </tbody>
+            </Table>
+        );
+    }
+
+
     return (
         <div>
             <Container>
@@ -45,6 +103,11 @@ const Product = () => {
                             <h3>Product</h3>
                             <button onClick={handleShow}>Add</button>
                         </div>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
+                        {renderProducts()}
                     </Col>
                 </Row>
             </Container>
@@ -97,6 +160,11 @@ const Product = () => {
                             )
                         }
                     </select>
+
+                    {
+                        productPictures.length > 0 ?
+                            productPictures.map((pic, index) => <div key={index}>{pic.name}</div>) : null
+                    }
 
                     <input type='file' name='productPicture' onChange={handleProductPicture} />
 

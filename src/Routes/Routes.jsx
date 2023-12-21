@@ -43,6 +43,8 @@ import { isUserLoggedIn } from '../redux/actions/authActions';
 import Order from '../pages/Order/Order';
 import Product from '../pages/Product/Product';
 import Category from '../pages/category/category';
+import { getAllCategory } from '../redux/actions/categoryAction';
+import { getInitialData } from '../redux/actions/initialDataAction';
 
 const App = () => {
     const dispatch = useDispatch();
@@ -51,6 +53,7 @@ const App = () => {
         if (!auth.authenticate) {
             dispatch(isUserLoggedIn())
         }
+        dispatch(getInitialData());
     }, [])
     return (
         <div className='App'>

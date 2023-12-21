@@ -38,7 +38,7 @@ const NavBar = () => {
     }
     return (
         <div>
-            <Navbar collapseOnSelect expand="lg" className="bg-white text-light" style={{ zIndex: 1 }}>
+            <Navbar collapseOnSelect fixed='top' expand="lg" className="bg-white text-light" style={{ zIndex: 1 }}>
                 <Container fluid>
                     <Link to='/' className='navbar-brand'>Admin Dashboard</Link>
                     <Navbar.Toggle aria-controls="responsive-navbar-nav" />

@@ -19,7 +19,7 @@ const Main = () => {
                                     <li><NavLink to='/order'>Orders</NavLink></li>
                                 </ul>
                             </Col>
-                            <Col md={10} style={{ marginLeft: 'auto' }}>{<Outlet />}</Col>
+                            <Col md={10} style={{ marginLeft: 'auto', paddingTop: "60px" }}>{<Outlet />}</Col>
                         </Row>
                     </Container> : <Outlet />
             }

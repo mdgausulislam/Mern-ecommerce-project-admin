@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { Button, Col, Container, Form, Modal, Row } from 'react-bootstrap';
+import React, { useState } from 'react';
+import { Button, Col, Container, Modal, Row } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import { addCategory, getAllCategory } from '../../redux/actions/categoryAction';
+import { addCategory } from '../../redux/actions/categoryAction';
 
 
 const Category = () => {
@@ -12,22 +12,18 @@ const Category = () => {
     const [categoryImage, setCategoryImage] = useState('');
     const dispatch = useDispatch();
 
-    useEffect(() => {
-        dispatch(getAllCategory());
-    }, [])
 
     const handleClose = () => {
 
         const form = new FormData();
 
-
         form.append('name', categoryName);
-
         form.append('parentId', parentCategoryId);
         console.log("parentid", parentCategoryId);
-
         form.append('categoryImage', categoryImage);
         dispatch(addCategory(form));
+        setCategoryName('');
+        setParentCategoryId('');
 
         setShow(false);
     };
