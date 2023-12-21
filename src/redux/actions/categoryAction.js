@@ -24,22 +24,31 @@ export const getAllCategory = () => {
 
     }
 }
+
+
 export const addCategory = (form) => {
-    dispatch({ type: categoryConstansts.ADD_NEW_CATEGORY_REQUEST })
     return async dispatch => {
-        const res = await axiosInstance.post(`category/create`, form);
-        console.log(res);
-        if (res.status === 201) {
-            dispatch({
-                type: categoryConstansts.ADD_NEW_CATEGORY_SUCCESS,
-                payload: res.data.category
-            })
-        } else {
-            dispatch({
-                type: categoryConstansts.ADD_NEW_CATEGORY_FAILURE,
-                payload: { error: res.data.error }
-            })
+        dispatch({ type: categoryConstansts.ADD_NEW_CATEGORY_REQUEST });
+        try {
+            const res = await axios.post(`/category/create`, form);
+            if (res.status === 201) {
+                console.log("category-list:", res.data.category);
+                dispatch({
+                    type: categoryConstansts.ADD_NEW_CATEGORY_SUCCESS,
+                    payload: { category: res.data.category }
+                });
+            } else {
+                dispatch({
+                    type: categoryConstansts.ADD_NEW_CATEGORY_FAILURE,
+                    payload: res.data.error
+                });
+            }
+        } catch (error) {
+            console.log(error.response);
         }
+
     }
 }
+
+
 

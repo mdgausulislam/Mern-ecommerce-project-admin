@@ -4,6 +4,7 @@ import userReducers from "./userReducer";
 import categoryReducer from "./categoryReducer";
 
 
+
 const rootReducer = combineReducers({
     auth: authReducers,
     user: userReducers,

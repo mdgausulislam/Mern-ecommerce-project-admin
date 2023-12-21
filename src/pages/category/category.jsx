@@ -20,11 +20,16 @@ const Category = () => {
 
         const form = new FormData();
 
-        form.append('name',categoryName)
-        form.append('parentId',parentCategoryId)
-        form.append('categoryImage',categoryImage)
+
+        form.append('name', categoryName);
+
+        form.append('parentId', parentCategoryId);
+        console.log("parentid", parentCategoryId);
+
+        form.append('categoryImage', categoryImage);
         dispatch(addCategory(form));
-        setShow(false)
+
+        setShow(false);
     };
     const handleShow = () => setShow(true);
 
@@ -42,11 +47,14 @@ const Category = () => {
 
     }
 
+
     const createCategoryList = (categories, options = []) => {
         for (let category of categories) {
             options.push({
                 value: category._id,
                 name: category.name,
+                parentId: category.parentId,
+                type: category.type
             });
             if (category.children.length > 0) {
                 createCategoryList(category.children, options)
@@ -76,7 +84,6 @@ const Category = () => {
                     <Col md={12}>
                         <ul>
                             {showCategoryData(category.categories)}
-                            {/* {JSON.stringify(createCategoryList(category.categories))} */}
                         </ul>
                     </Col>
                 </Row>
@@ -90,7 +97,6 @@ const Category = () => {
                         type="text"
                         className="form-control mb-3"
                         value={categoryName}
-                        aria-describedby="emailHelp"
                         placeholder={`Category Name`}
                         onChange={(e) => setCategoryName(e.target.value)} />
 

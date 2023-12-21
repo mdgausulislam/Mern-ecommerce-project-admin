@@ -59,7 +59,7 @@ const App = () => {
                     {/* Public Routes */}
                     <Route index element={<PrivateRoutes Component={Home} />} />
                     <Route path="/order" element={<Order />} />
-                    <Route path="/category" element={<Category />} />
+                    <Route path="/category" element={<PrivateRoutes Component={Category} />} />
                     <Route path="/product" element={<Product />} />
 
 
