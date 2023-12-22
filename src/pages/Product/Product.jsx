@@ -63,27 +63,27 @@ const Product = () => {
 
     const renderProducts = () => {
         return (
-            <Table responsive="sm">
+            <Table style={{ fontSize: 12 }} responsive="sm">
                 <thead>
                     <tr>
                         <th>#</th>
                         <th>Name</th>
                         <th>Price</th>
                         <th>Quantity</th>
-                        <th>Description</th>
                         <th>Category</th>
                     </tr>
                 </thead>
                 <tbody>
                     {
                         product.products.length > 0 ?
-                            product.products.map((product, index) => <tr key={product._id}>
+                            product.products.map((product, index) => <tr
+                                onClick={() => showProductDetailsModal(product)}
+                                key={product._id}>
                                 <td>{index + 1}</td>
                                 <td>{product.name}</td>
                                 <td>{product.price}</td>
                                 <td>{product.quantity}</td>
-                                <td>{product.description}</td>
-                                <td>{product.category}</td>
+                                <td>---</td>
                             </tr>) : null
                     }
 
@@ -92,25 +92,8 @@ const Product = () => {
         );
     }
 
-
-    return (
-        <div>
-            <Container>
-                <Row>
-                    <Col md={12}>
-
-                        <div className='d-flex justify-content-between'>
-                            <h3>Product</h3>
-                            <button onClick={handleShow}>Add</button>
-                        </div>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col>
-                        {renderProducts()}
-                    </Col>
-                </Row>
-            </Container>
+    const renderAddProductModal = () => {
+        return (
             <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
                     <Modal.Title>Add New Category</Modal.Title>
@@ -178,6 +161,63 @@ const Product = () => {
                     </Button>
                 </Modal.Footer>
             </Modal>
+        )
+    }
+
+    const handleCloseProductDetailsModal = () => {
+        setProductDetailModal(false);
+    };
+
+    const showProductDetailsModal = (product) => {
+        // setProductDetails(product);
+        setProductDetailModal(true);
+        console.log(product);
+    };
+
+    const renderProductDetailsModal = () => {
+        return (
+            <Modal show={productDetailModal} onHide={handleCloseProductDetailsModal} size="lg">
+                <Modal.Header closeButton>
+                    <Modal.Title>Product Details</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <Row>
+                        <Col md='6'>
+                        </Col>
+                    </Row>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleClose}>
+                        Close
+                    </Button>
+                    <Button variant="primary" onClick={handleClose}>
+                        Save Changes
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+        )
+    }
+
+    return (
+        <div>
+            <Container>
+                <Row>
+                    <Col md={12}>
+
+                        <div className='d-flex justify-content-between'>
+                            <h3>Product</h3>
+                            <button onClick={handleShow}>Add</button>
+                        </div>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
+                        {renderProducts()}
+                    </Col>
+                </Row>
+            </Container>
+            {renderAddProductModal()}
+            {renderProductDetailsModal()}
         </div>
     );
 };
