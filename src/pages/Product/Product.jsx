@@ -3,6 +3,8 @@ import { Button, Col, Container, Modal, Row } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { addProduct } from '../../redux/actions/productAction';
 import Table from 'react-bootstrap/Table';
+import './product.css';
+import { generatedPublicUrl } from '../../../urlConfig';
 
 const Product = () => {
     const [name, setName] = useState("");
@@ -29,7 +31,7 @@ const Product = () => {
         form.append("category", categoryId);
 
         for (let pic of productPictures) {
-            form.append("productPicture", pic);
+            form.append("productPictures", pic);
         }
 
         dispatch(addProduct(form))
@@ -55,10 +57,7 @@ const Product = () => {
     }
 
     const handleProductPicture = (e) => {
-        setProductPictures([
-            ...productPictures,
-            e.target.files[0]
-        ])
+        setProductPictures([...productPictures, e.target.files[0]])
     }
 
     const renderProducts = () => {
@@ -83,10 +82,9 @@ const Product = () => {
                                 <td>{product.name}</td>
                                 <td>{product.price}</td>
                                 <td>{product.quantity}</td>
-                                <td>---</td>
+                                <td>{product.category.name}</td>
                             </tr>) : null
                     }
-
                 </tbody>
             </Table>
         );
@@ -149,7 +147,7 @@ const Product = () => {
                             productPictures.map((pic, index) => <div key={index}>{pic.name}</div>) : null
                     }
 
-                    <input type='file' name='productPicture' onChange={handleProductPicture} />
+                    <input type='file' name='productPictures' onChange={handleProductPicture} />
 
                 </Modal.Body>
                 <Modal.Footer>
@@ -169,12 +167,22 @@ const Product = () => {
     };
 
     const showProductDetailsModal = (product) => {
-        // setProductDetails(product);
+        setProductDetails(product);
         setProductDetailModal(true);
         console.log(product);
     };
 
     const renderProductDetailsModal = () => {
+        if (!productDetails) {
+            return null; // or handle this case as needed
+        }
+
+        // Check if productPictures is null or undefined
+        if (!productDetails.productPictures) {
+            return null; // or handle this case as needed
+        }
+
+
         return (
             <Modal show={productDetailModal} onHide={handleCloseProductDetailsModal} size="lg">
                 <Modal.Header closeButton>
@@ -183,6 +191,40 @@ const Product = () => {
                 <Modal.Body>
                     <Row>
                         <Col md='6'>
+                            <label className="key">Name</label>
+                            <p className="value">{productDetails.name}</p>
+                        </Col>
+                        <Col md="6">
+                            <label className="key">Price</label>
+                            <p className="value">{productDetails.price}</p>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col md='6'>
+                            <label className="key">Quantity</label>
+                            <p className="value">{productDetails.quantity}</p>
+                        </Col>
+                        <Col md="6">
+                            <label className="key">Category</label>
+                            <p className="value">{productDetails.category.name}</p>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col md="12">
+                            <label className="key">Description</label>
+                            <p className="value">{productDetails.description}</p>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col>
+                            <label className="key">Product Pictures</label>
+                            <div style={{ display: "flex" }}>
+                                {productDetails.productPictures.map((picture, index) => (
+                                    <div key={index} className="productImgContainer">
+                                        <img src={generatedPublicUrl(picture.img)} alt="" />
+                                    </div>
+                                ))}
+                            </div>
                         </Col>
                     </Row>
                 </Modal.Body>
