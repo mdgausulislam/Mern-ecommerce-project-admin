@@ -1,13 +1,11 @@
 import axiosInstance from "../../Axios/AxiosSecure";
 import { categoryConstansts } from "./constant";
 
-
 export const getAllCategory = () => {
     return async dispatch => {
+        console.log("Received Form Data in Action:"); // Log the received form data
         dispatch({ type: categoryConstansts.GET_ALL_CATEGORIES_REQUEST })
         const res = await axiosInstance.get(`/category/getcategory`);
-        console.log(res);
-
         if (res.status === 200) {
             const { categoryList } = res.data;
 
@@ -25,9 +23,9 @@ export const getAllCategory = () => {
     }
 }
 
-
 export const addCategory = (form) => {
     return async dispatch => {
+        console.log("Received Form Data in Action:", form); // Log the received form data
         dispatch({ type: categoryConstansts.ADD_NEW_CATEGORY_REQUEST });
         const res = await axiosInstance.post(`/category/create`, form);
         if (res.status === 201) {
@@ -45,6 +43,4 @@ export const addCategory = (form) => {
 
     }
 }
-
-
 

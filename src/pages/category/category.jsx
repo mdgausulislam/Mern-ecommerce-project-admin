@@ -17,16 +17,21 @@ const Category = () => {
 
         const form = new FormData();
 
+        if (categoryName === "") {
+            alert('Category name is required');
+            setShow(false);
+            return;
+        }
+
         form.append('name', categoryName);
         form.append('parentId', parentCategoryId);
-        console.log("parentid", parentCategoryId);
         form.append('categoryImage', categoryImage);
         dispatch(addCategory(form));
         setCategoryName('');
         setParentCategoryId('');
-
         setShow(false);
-    };
+    }
+    
     const handleShow = () => setShow(true);
 
     const showCategoryData = (categories) => {
@@ -42,7 +47,6 @@ const Category = () => {
         return myCategories;
 
     }
-
 
     const createCategoryList = (categories, options = []) => {
         for (let category of categories) {
