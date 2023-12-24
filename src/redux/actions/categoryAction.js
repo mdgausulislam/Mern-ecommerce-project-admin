@@ -44,3 +44,18 @@ export const addCategory = (form) => {
     }
 }
 
+export const updateCategories = (form) => {
+    return async dispatch => {
+        console.log("Received Form Data in Action:", form); // Log the received form data
+        const res = await axiosInstance.post(`/category/update`, form);
+        if (res.status === 201) {
+            return true;
+            console.log(res);
+        } else {
+            console.log(res);
+        }
+    }
+}
+
+
+
