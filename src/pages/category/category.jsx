@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Button, Col, Container, Modal, Row } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import { addCategory, getAllCategory, updateCategories } from '../../redux/actions/categoryAction';
+import { addCategory, deletedCategories, getAllCategory, updateCategories } from '../../redux/actions/categoryAction';
 import CheckboxTree from 'react-checkbox-tree';
 import { IoIosArrowDropdown, IoIosArrowForward, IoIosCheckbox, IoIosCheckboxOutline } from "react-icons/io";
 import 'react-checkbox-tree/lib/react-checkbox-tree.css';
@@ -79,7 +79,11 @@ const Category = () => {
     }
 
     const updateCategory = () => {
+        updateCheckedAndExpandCategories();
         setUpdateCategoryModal(true);
+    }
+
+    const updateCheckedAndExpandCategories = () => {
         const categories = createCategoryList(category.categories);
 
         const checkedArray = [];
@@ -94,7 +98,6 @@ const Category = () => {
         })
         setCheckedArray(checkedArray)
         setExpandedArray(expandedArray)
-        console.log({ checked, expanded, categories, checkedArray, expandedArray });
     }
 
     const handleCategoryInput = (key, value, index, type) => {
@@ -136,6 +139,31 @@ const Category = () => {
     const closeModal = () => {
         setUpdateCategoryModal(false);
     };
+
+
+    const closeDeleteModal = () => {
+        setDeleteCategoryModal(false);
+    };
+
+    const deleteCategory = () => {
+        updateCheckedAndExpandCategories();
+        setDeleteCategoryModal(true);
+    }
+
+    const deleteCategories = () => {
+        const checkedIdsArray = checkedArray.map((item, index) => ({ _id: item.value }));
+        const expandsIdsArray = expandeddArray.map((item, index) => ({ _id: item.value }));
+
+        const idsArray = expandsIdsArray.concat(checkedIdsArray);
+        dispatch(deletedCategories(idsArray))
+            .then(result => {
+                if (result) {
+                    dispatch(getAllCategory());
+                    closeDeleteModal();
+                }
+            });
+    }
+
 
     const renderAddCategoryModal = () => {
         return (
@@ -293,10 +321,6 @@ const Category = () => {
         );
     }
 
-    const closeDeleteModal = () => {
-        setDeleteCategoryModal(false);
-    };
-
     const renderDeleteCategoryModal = () => {
         return (
             <Modal show={deleteCategoryModal} onHide={closeDeleteModal}>
@@ -304,37 +328,19 @@ const Category = () => {
                     <Modal.Title>Delete Category</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <input
-                        type="text"
-                        className="form-control mb-3"
-                        value={categoryName}
-                        placeholder={`Category Name`}
-                        onChange={(e) => setCategoryName(e.target.value)} />
-
-                    <select
-                        className="form-control mb-3"
-                        value={parentCategoryId}
-                        onChange={(e) => setParentCategoryId(e.target.value)}>
-                        <option>select category</option>
-                        {
-                            createCategoryList(category.categories).map(option =>
-                                <option
-                                    key={option.value}
-                                    value={option.value}>
-                                    {option.name}
-                                </option>
-                            )
-                        }
-                    </select>
-                    <input type="file" name="categoryImage" onChange={handleCategoryImage} />
+                    <h3>Are you sure Delete category Items?</h3>
+                    <h6>Expanded</h6>
+                    {expandeddArray.map((item, index) => <span key={index}>{item.name}</span>)}
+                    <h6>Checked</h6>
+                    {checkedArray.map((item, index) => <span key={index}>{item.name}</span>)}
 
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={closeDeleteModal}>
-                        Close
+                        No
                     </Button>
-                    <Button variant="primary" onClick={handleClose}>
-                        Save Changes
+                    <Button variant="danger" onClick={deleteCategories}>
+                        Yes, Delete
                     </Button>
                 </Modal.Footer>
             </Modal>
@@ -377,7 +383,7 @@ const Category = () => {
                 </Row>
                 <Row>
                     <Col>
-                        <button>Delete</button>
+                        <button onClick={deleteCategory}>Delete</button>
                         <button onClick={updateCategory}>Edit</button>
                     </Col>
                 </Row>
