@@ -22,7 +22,7 @@ const NewPage = () => {
     }, [category])
 
     const onCategoryChange = (e) => {
-        const category = categories.find(category => category.value == e.target.value);
+        const category = categories.find(category => category._id == e.target.value);
         setCategoryId(e.target.value);
         setType(category.type);
     }
@@ -37,7 +37,7 @@ const NewPage = () => {
     }
 
     const submitPageForm = (e) => {
-        e.target.preventDefault();
+        // e.target.preventDefault();
 
         if (title === "") {
             alert('Title is required');
@@ -57,6 +57,8 @@ const NewPage = () => {
         products.forEach((product, index) => {
             form.append('products', product);
         });
+
+        console.log({ title, desc, categoryId, type, banners, products });
 
         // dispatch(createPage(form));
 
