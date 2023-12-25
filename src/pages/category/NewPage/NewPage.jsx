@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Button, Modal, Col, Row, Container } from 'react-bootstrap';
 import LinearCategories from '../../../Axios/LinearCategory';
 import { useDispatch, useSelector } from 'react-redux';
+import { createPage } from '../../../redux/actions/pageAction';
 
 const NewPage = () => {
     const [createModal, setCreateModal] = useState(false);
@@ -26,7 +27,7 @@ const NewPage = () => {
         setCategoryId(e.target.value);
         setType(category.type);
     }
-
+ 
     const handlBannerImage = (e) => {
         console.log(e);
         setBanners([...banners, e.target.files[0]]);
@@ -37,8 +38,7 @@ const NewPage = () => {
     }
 
     const submitPageForm = (e) => {
-        // e.target.preventDefault();
-
+  
         if (title === "") {
             alert('Title is required');
             setCreateModal(false);
@@ -58,11 +58,8 @@ const NewPage = () => {
             form.append('products', product);
         });
 
+        dispatch(createPage(form));
         console.log({ title, desc, categoryId, type, banners, products });
-
-        // dispatch(createPage(form));
-
-
     }
 
 
