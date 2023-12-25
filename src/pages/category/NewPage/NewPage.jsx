@@ -21,9 +21,37 @@ const NewPage = () => {
 
     const handlBannerImage = (e) => {
         console.log(e);
+        setBanners([...banners, e.target.files[0]]);
     }
     const handlProductImage = (e) => {
         console.log(e);
+        setProducts([...products, e.target.files[0]]);
+    }
+
+    const submitPageForm = (e) => {
+        e.target.preventDefault();
+
+        // if(title === ""){
+        //     alert('Title is required');
+        //     setCreateModal(false);
+        //     return;
+        // }
+
+        const form = new FormData();
+        form.append('title', title);
+        form.append('description', desc);
+        form.append('category', categoryId);
+        form.append('type', type);
+        banners.forEach((banner, index) => {
+            form.append('banners', banner);
+        });
+        products.forEach((product, index) => {
+            form.append('products', product);
+        });
+
+        // dispatch(createPage(form));
+
+        
     }
 
 
@@ -76,6 +104,15 @@ const NewPage = () => {
                             </Col>
                         </Row>
                         <Row>
+
+                            {
+                                banners.length > 0 ?
+                                    banners.map((banner, index) =>
+                                        <Row key={index}>
+                                            <Col>{banner.name}</Col>
+                                        </Row>
+                                    ) : null
+                            }
                             <Col>
                                 <input
                                     className='form-control mb-3 form-control-sm'
@@ -85,6 +122,14 @@ const NewPage = () => {
                             </Col>
                         </Row>
                         <Row>
+                            {
+                                products.length > 0 ?
+                                    products.map((product, index) =>
+                                        <Row key={index}>
+                                            <Col>{product.name}</Col>
+                                        </Row>
+                                    ) : null
+                            }
                             <Col>
                                 <input
                                     className='form-control mb-3 form-control-sm'
