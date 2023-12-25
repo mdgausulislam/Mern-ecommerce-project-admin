@@ -10,6 +10,7 @@ const UpdateCategoryModal = ({
     updateCategoriesForm,
     category
 }) => {
+    console.log({ expandeddArray, checkedArray });
 
     return (
         <Modal show={show} onHide={closeModal} size='lg'>
@@ -17,13 +18,11 @@ const UpdateCategoryModal = ({
                 <Modal.Title>Update Categories</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-
                 <Row>
                     <Col>
                         <h6>Expanded</h6>
                     </Col>
                 </Row>
-
                 {
                     expandeddArray.length > 0 &&
                     expandeddArray.map((item, index) =>
@@ -35,7 +34,6 @@ const UpdateCategoryModal = ({
                                     value={item.name}
                                     placeholder={`Category Name`}
                                     onChange={(e) => handleCategoryInput('name', e.target.value, index, 'expanded')} />
-
                             </Col>
                             <Col>
                                 <select
@@ -55,7 +53,11 @@ const UpdateCategoryModal = ({
                                 </select>
                             </Col>
                             <Col>
-                                <select className="form-select mb-3">
+                                <select
+                                    className="form-select mb-3"
+                                    value={item.type}
+                                    onChange={(e) => handleCategoryInput('type', e.target.value, index, 'expanded')}
+                                >
                                     <option value=''>Select Type</option>
                                     <option value='store'>Store</option>
                                     <option value='product'>Product</option>
@@ -98,7 +100,11 @@ const UpdateCategoryModal = ({
                                 </select>
                             </Col>
                             <Col>
-                                <select className="form-select mb-3">
+                                <select
+                                    className="form-select mb-3"
+                                    value={item.type}
+                                    onChange={(e) => handleCategoryInput('type', e.target.value, index, 'checked')}
+                                >
                                     <option value=''>Select Type</option>
                                     <option value='store'>Store</option>
                                     <option value='product'>Product</option>

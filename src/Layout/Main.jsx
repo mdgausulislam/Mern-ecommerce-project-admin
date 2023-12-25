@@ -14,6 +14,7 @@ const Main = () => {
                             <Col md={2} className='sidebar'>
                                 <ul>
                                     <li><NavLink to='/'>Home</NavLink></li>
+                                    <li><NavLink to='/page'>Page</NavLink></li>
                                     <li><NavLink to='/category'>Category</NavLink></li>
                                     <li><NavLink to='/product'>Products</NavLink></li>
                                     <li><NavLink to='/order'>Orders</NavLink></li>

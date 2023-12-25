@@ -93,6 +93,23 @@ const categoryReducer = (state = initState, action) => {
             return {
                 ...state,
                 error: action.payload.error,
+                loading: false
+            };
+        case categoryConstansts.DELETE_CATEGORIES_REQUEST:
+            return {
+                ...state,
+                loading: true
+            };
+        case categoryConstansts.DELETE_CATEGORIES_SUCCESS:
+            return {
+                ...state,
+                loading: true
+            };
+        case categoryConstansts.DELETE_CATEGORIES_FAILURE:
+            return {
+                ...state,
+                error: action.payload.error,
+                loading: false
             };
         default:
             return state;

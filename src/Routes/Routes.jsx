@@ -45,6 +45,7 @@ import Product from '../pages/Product/Product';
 import Category from '../pages/category/category';
 import { getAllCategory } from '../redux/actions/categoryAction';
 import { getInitialData } from '../redux/actions/initialDataAction';
+import NewPage from '../pages/category/NewPage/NewPage';
 
 const App = () => {
     const dispatch = useDispatch();
@@ -62,6 +63,7 @@ const App = () => {
                     {/* Public Routes */}
                     <Route index element={<PrivateRoutes Component={Home} />} />
                     <Route path="/order" element={<Order />} />
+                    <Route path="/page" element={<NewPage />} />
                     <Route path="/category" element={<PrivateRoutes Component={Category} />} />
                     <Route path="/product" element={<Product />} />
 

@@ -160,6 +160,7 @@ const Category = () => {
                     }
                 });
         }
+        closeDeleteModal();
     }
 
     return (
