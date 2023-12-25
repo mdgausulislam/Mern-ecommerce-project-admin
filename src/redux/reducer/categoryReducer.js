@@ -65,9 +65,8 @@ const categoryReducer = (state = initState, action) => {
             };
         case categoryConstansts.ADD_NEW_CATEGORY_SUCCESS:
             const category = action.payload.category;
-            console.log("Received Category in Reducer:", action.payload.category);
             const updatedCategories = buildNewCategories(category.parentId, state.categories, category);
-            console.log(updatedCategories);
+            console.log("update categories in category list:", updatedCategories);
             return {
                 ...state,
                 categories: updatedCategories,
@@ -79,7 +78,21 @@ const categoryReducer = (state = initState, action) => {
                 ...initState,
                 error: action.payload.error,
                 loading: false
-
+            };
+        case categoryConstansts.UPDATE_CATEGORIES_REQUEST:
+            return {
+                ...state,
+                loading: true
+            };
+        case categoryConstansts.UPDATE_CATEGORIES_SUCCESS:
+            return {
+                ...state,
+                loading: true
+            };
+        case categoryConstansts.UPDATE_CATEGORIES_FAILURE:
+            return {
+                ...state,
+                error: action.payload.error,
             };
         default:
             return state;

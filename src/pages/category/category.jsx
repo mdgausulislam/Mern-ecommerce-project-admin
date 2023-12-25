@@ -115,8 +115,8 @@ const Category = () => {
     }
 
     const updateCategoriesForm = () => {
-
         const form = new FormData();
+
         expandeddArray.forEach((item, index) => {
             form.append('_id', item.value);
             form.append('name', item.name);
@@ -129,13 +129,7 @@ const Category = () => {
             form.append('parentId', item.parentId ? item.parentId : "");
             form.append('type', item.type);
         });
-        dispatch(updateCategories(form))
-            .then(result => {
-                if (result) {
-                    dispatch(getAllCategory());
-                }
-            })
-
+        dispatch(updateCategories(form));
         setUpdateCategoryModal(false)
     }
 
@@ -206,12 +200,6 @@ const Category = () => {
 
                     </Col>
                 </Row>
-                {/* <Row>
-                    <Col>
-                        <button onClick={deleteCategory}>Delete</button>
-                        <button onClick={updateCategory}>Edit</button>
-                    </Col>
-                </Row> */}
             </Container>
 
             {/* added categories modal */}
@@ -245,7 +233,6 @@ const Category = () => {
                 expandeddArray={expandeddArray}
                 checkedArray={checkedArray}
                 deleteCategories={deleteCategories} />
-
         </div>
     );
 };
