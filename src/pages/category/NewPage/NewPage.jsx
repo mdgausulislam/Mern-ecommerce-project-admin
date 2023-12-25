@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Modal, Col, Row, Container } from 'react-bootstrap';
 import LinearCategories from '../../../Axios/LinearCategory';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 const NewPage = () => {
     const [createModal, setCreateModal] = useState(false);
@@ -9,8 +9,11 @@ const NewPage = () => {
     const [categories, setCategories] = useState([]);
     const [categoryId, setCategoryId] = useState('');
     const [desc, setDesc] = useState('');
+    const [type, setType] = useState('');
     const [banners, setBanners] = useState([]);
     const [products, setProducts] = useState([]);
+    const dispatch = useDispatch();
+    const page = useSelector(state => state.page);
 
     const category = useSelector(state => state.category);
 
@@ -18,6 +21,11 @@ const NewPage = () => {
         setCategories(LinearCategories(category.categories));
     }, [category])
 
+    const onCategoryChange = (e) => {
+        const category = categories.find(category => category.value == e.target.value);
+        setCategoryId(e.target.value);
+        setType(category.type);
+    }
 
     const handlBannerImage = (e) => {
         console.log(e);
@@ -31,13 +39,14 @@ const NewPage = () => {
     const submitPageForm = (e) => {
         e.target.preventDefault();
 
-        // if(title === ""){
-        //     alert('Title is required');
-        //     setCreateModal(false);
-        //     return;
-        // }
+        if (title === "") {
+            alert('Title is required');
+            setCreateModal(false);
+            return;
+        }
 
         const form = new FormData();
+
         form.append('title', title);
         form.append('description', desc);
         form.append('category', categoryId);
@@ -51,7 +60,7 @@ const NewPage = () => {
 
         // dispatch(createPage(form));
 
-        
+
     }
 
 
@@ -68,13 +77,13 @@ const NewPage = () => {
                                 <select
                                     className="form-select mb-3 form-select-sm"
                                     value={categoryId}
-                                    onChange={(e) => setCategoryId(e.target.value)}>
+                                    onChange={onCategoryChange}>
                                     <option value={''}>select category</option>
                                     {
                                         categories.map(cat =>
                                             <option
                                                 key={cat._id}
-                                                value={cat.value}>
+                                                value={cat._id}>
                                                 {cat.name}
                                             </option>
                                         )
@@ -144,7 +153,7 @@ const NewPage = () => {
                     <Button variant="secondary" onClick={() => setCreateModal(false)}>
                         Close
                     </Button>
-                    <Button style={{ backgroundColor: "#333", color: "#fff" }} onClick={() => setCreateModal(false)}>
+                    <Button style={{ backgroundColor: "#333", color: "#fff" }} onClick={submitPageForm}>
                         Save
                     </Button>
                 </Modal.Footer>
