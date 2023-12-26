@@ -22,12 +22,24 @@ const NewPage = () => {
         setCategories(LinearCategories(category.categories));
     }, [category])
 
+    useEffect(() => {
+        console.log(page);
+        if (!page.loading) {
+            setCreateModal(false);
+            setTitle('');
+            setCategoryId('');
+            setDesc('');
+            setProducts([]);
+            setBanners([]);
+        }
+    }, [page]);
+
     const onCategoryChange = (e) => {
         const category = categories.find(category => category._id == e.target.value);
         setCategoryId(e.target.value);
         setType(category.type);
     }
- 
+
     const handlBannerImage = (e) => {
         console.log(e);
         setBanners([...banners, e.target.files[0]]);
@@ -38,7 +50,7 @@ const NewPage = () => {
     }
 
     const submitPageForm = (e) => {
-  
+
         if (title === "") {
             alert('Title is required');
             setCreateModal(false);
@@ -157,7 +169,12 @@ const NewPage = () => {
                     </Button>
                 </Modal.Footer>
             </Modal>
-            <button onClick={() => setCreateModal(true)}>Create page</button>
+            {
+                page.loading ?
+                    <p>Creating Page...please wait</p>
+                    :
+                    <button onClick={() => setCreateModal(true)}>Create page</button>
+            }
         </div>
     );
 };

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Col, Container, Modal, Row } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { addCategory, deletedCategories, getAllCategory, updateCategories } from '../../redux/actions/categoryAction';
@@ -23,6 +23,14 @@ const Category = () => {
     const [updateCategoryModal, setUpdateCategoryModal] = useState(false);
     const [deleteCategoryModal, setDeleteCategoryModal] = useState(false);
     const dispatch = useDispatch();
+
+
+    useEffect(() => {
+        if (!category.loading) {
+            setShow(false);
+        }
+
+    }, [category.loading]);
 
 
     const handleClose = () => {
