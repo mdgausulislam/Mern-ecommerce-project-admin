@@ -127,7 +127,7 @@ const Product = () => {
                         onChange={(e) => setDescription(e.target.value)} />
 
                     <select
-                        className="form-control mb-3"
+                        className="form-select mb-3"
                         value={categoryId}
                         onChange={(e) => setCategoryId(e.target.value)}>
                         <option>select category</option>
@@ -229,7 +229,7 @@ const Product = () => {
                     </Row>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={handleClose}>
+                    <Button variant="secondary" onClick={handleCloseProductDetailsModal}>
                         Close
                     </Button>
                     <Button variant="primary" onClick={handleClose}>
