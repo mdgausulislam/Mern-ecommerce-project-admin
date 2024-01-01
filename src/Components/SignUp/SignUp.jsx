@@ -12,8 +12,7 @@ import SocialLogin from '../Shared/SocialLogin/SocialLogin';
 import { Navigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { signup } from '../../redux/actions/userAction';
-import { useState } from 'react';
-import Spinner from 'react-bootstrap/Spinner';
+import { useEffect, useState } from 'react';
 
 
 const SignUp = () => {
@@ -27,27 +26,36 @@ const SignUp = () => {
     const auth = useSelector(state => state.auth);
     const user = useSelector(state => state.user);
 
+    useEffect(() => {
+        if (!user.loading) {
+            setFirstName("");
+            setLastName("");
+            setEmail("");
+            setPassword("");
+        }
+    }, [user.loading]);
+
+    const userSignup = (e) => {
+        e.preventDefault();
+
+        const user = {
+            firstName,
+            lastName,
+            email,
+            password,
+        };
+
+        dispatch(signup(user));
+    };
+
     if (auth.authenticate) {
-        return <Navigate to='/' />
+        return <Navigate to={`/`} />;
     }
 
     if (user.loading) {
-        return (
-            <Spinner animation="border" role="status">
-                <span className="visually-hidden">Loading...</span>
-            </Spinner>
-        );
+        return <p>Loading...!</p>;
     }
 
-    const handleClickSignUp = (e) => {
-        e.preventDefault();
-
-
-        const user = {
-            firstName, lastName, email, password
-        }
-        dispatch(signup(user));
-    }
     return (
         <MDBContainer className="p-3 my-5 container">
             <MDBRow>
@@ -55,7 +63,7 @@ const SignUp = () => {
                     <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.svg" className="img-fluid animated-image" alt="Phone image" />
                 </MDBCol>
                 <MDBCol col='4' md='6'>
-                    <form onSubmit={handleClickSignUp}>
+                    <form onSubmit={userSignup}>
                         <MDBInput
                             wrapperClass='mb-4 mt-3'
                             placeholder='FirstName'

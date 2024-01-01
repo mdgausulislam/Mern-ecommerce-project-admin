@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Button, Col, Container, Modal, Row } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import { addProduct } from '../../redux/actions/productAction';
+import { addProduct, deleteProductById } from '../../redux/actions/productAction';
 import Table from 'react-bootstrap/Table';
 import './product.css';
 import { generatedPublicUrl } from '../../../urlConfig';
@@ -15,7 +15,9 @@ const Product = () => {
     const [productPictures, setProductPictures] = useState([]);
     const [show, setShow] = useState(false);
     const [productDetailModal, setProductDetailModal] = useState(false);
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [productDetails, setProductDetails] = useState(null);
+    const [productToDelete, setProductToDelete] = useState(null);
     const category = useSelector((state) => state.category);
     const product = useSelector((state) => state.product);
     const dispatch = useDispatch();
@@ -70,6 +72,7 @@ const Product = () => {
                         <th>Price</th>
                         <th>Quantity</th>
                         <th>Category</th>
+                        <th>Product Info</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -83,12 +86,18 @@ const Product = () => {
                                 <td>{product.price}</td>
                                 <td>{product.quantity}</td>
                                 <td>{product.category.name}</td>
+                                <td><button className='btn btn-info'>Info</button>
+                                    <button className='btn btn-danger' onClick={() => showDeleteProductModal(product)}>
+                                        Delete
+                                    </button></td>
                             </tr>) : null
                     }
                 </tbody>
             </Table>
         );
     }
+
+
 
     const renderAddProductModal = () => {
         return (
@@ -155,12 +164,15 @@ const Product = () => {
                         Close
                     </Button>
                     <Button variant="primary" onClick={handleClose}>
-                        Save Changes
+                        Create Product
                     </Button>
                 </Modal.Footer>
             </Modal>
         )
     }
+
+
+
 
     const handleCloseProductDetailsModal = () => {
         setProductDetailModal(false);
@@ -232,13 +244,97 @@ const Product = () => {
                     <Button variant="secondary" onClick={handleCloseProductDetailsModal}>
                         Close
                     </Button>
-                    <Button variant="primary" onClick={handleClose}>
-                        Save Changes
+                </Modal.Footer>
+            </Modal>
+        )
+    }
+
+
+
+    const handleCloseDeleteModal = () => {
+        setShowDeleteModal(false);
+    };
+
+    const showDeleteProductModal = (product) => {
+        setProductToDelete(product);
+        setShowDeleteModal(true);
+    };
+
+
+    const renderProductDeleteModal = () => {
+        if (!productToDelete) {
+            return null; // or handle this case as needed
+        }
+
+        // Check if productPictures is null or undefined
+        if (!productDetails.productPictures) {
+            return null; // or handle this case as needed
+        }
+
+        return (
+            <Modal show={showDeleteModal} onHide={handleCloseDeleteModal} size="lg">
+                <Modal.Header closeButton>
+                    <Modal.Title>Product Delete Modal</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <Row>
+                        <Col md='6'>
+                            <label className="key">Name</label>
+                            <p className="value">{productDetails.name}</p>
+                        </Col>
+                        <Col md="6">
+                            <label className="key">Price</label>
+                            <p className="value">{productDetails.price}</p>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col md='6'>
+                            <label className="key">Quantity</label>
+                            <p className="value">{productDetails.quantity}</p>
+                        </Col>
+                        <Col md="6">
+                            <label className="key">Category</label>
+                            <p className="value">{productDetails.category.name}</p>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col md="12">
+                            <label className="key">Description</label>
+                            <p className="value">{productDetails.description}</p>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col>
+                            <label className="key">Product Pictures</label>
+                            <div style={{ display: "flex" }}>
+                                {productDetails.productPictures.map((picture, index) => (
+                                    <div key={index} className="productImgContainer">
+                                        <img src={generatedPublicUrl(picture.img)} alt="" />
+                                    </div>
+                                ))}
+                            </div>
+                        </Col>
+                    </Row>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleCloseDeleteModal}>
+                        Close
+                    </Button>
+                    <Button variant="primary" onClick={() => handleDeleteProduct(productToDelete)}>
+                        Delete
                     </Button>
                 </Modal.Footer>
             </Modal>
         )
     }
+
+    const handleDeleteProduct = (product) => {
+        const payload = {
+            productId: product._id,
+        };
+        dispatch(deleteProductById(payload));
+        handleCloseDeleteModal();
+    };
 
     return (
         <div>
@@ -248,7 +344,7 @@ const Product = () => {
 
                         <div className='d-flex justify-content-between'>
                             <h3>Product</h3>
-                            <button onClick={handleShow}>Add</button>
+                            <button className='btn btn-primary' onClick={handleShow}>Create Product</button>
                         </div>
                     </Col>
                 </Row>
@@ -260,6 +356,7 @@ const Product = () => {
             </Container>
             {renderAddProductModal()}
             {renderProductDetailsModal()}
+            {renderProductDeleteModal()}
         </div>
     );
 };
